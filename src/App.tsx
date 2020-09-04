@@ -16,6 +16,7 @@ import I18nManager from './I18n/I18nManager';
 import LocationManager from './location/LocationManager';
 import NotificationManager from './notification/NotificationManager';
 import ProviderFactory from './provider/ProviderFactory';
+import ReportError from './screens//report-error//ReportError'
 import Eula from './screens/auth/eula/Eula';
 import Login from './screens/auth/login/Login';
 import ResetPassword from './screens/auth/reset-password/ResetPassword';
