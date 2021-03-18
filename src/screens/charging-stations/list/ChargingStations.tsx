@@ -1,12 +1,14 @@
 import { DrawerActions } from '@react-navigation/native';
 import I18n from 'i18n-js';
-import { Container, Spinner, View } from 'native-base';
+import { Container, Spinner, Text, View } from 'native-base';
 import React from 'react';
 import { FlatList, Platform, RefreshControl, ScrollView } from 'react-native';
 import { Location } from 'react-native-location';
 import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
+import { ClusterMap } from 'react-native-cluster-map';
+import PinCluster from '../../../components/PinCluster'
 
 import ChargingStationComponent from '../../../components/charging-station/ChargingStationComponent';
 import HeaderComponent from '../../../components/header/HeaderComponent';
@@ -305,6 +307,13 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
     }
   }
 
+  renderClusterMarker () {
+    return (
+      <PinCluster count={3}/>
+    )
+  } 
+
+
   public render() {
     const style = computeStyleSheet();
     const modalStyle = computeModalStyle();
@@ -344,10 +353,11 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
               />
               {mapIsDisplayed ?
                 <View style={style.map}>
-                  <MapView
+                  <ClusterMap
                     style={style.map}
                     region={this.currentRegion}
                     onRegionChange={this.onMapRegionChange}
+                    renderClusterMarker={this.renderClusterMarker}
                   >
                     {this.state.chargingStations.map((chargingStation) => {
                       if (Utils.containsGPSCoordinates(chargingStation.coordinates)) {
@@ -356,13 +366,13 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
                             key={chargingStation.id}
                             coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
                             title={chargingStation.id}
-                            onPress={() => this.showMapChargingStationDetail(chargingStation)}
-                          />
+                          >
+                          </Marker>
                         );
                       }
                       return undefined;
                     })}
-                  </MapView>
+                  </ClusterMap>
                   {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
                 </View>
                 :
