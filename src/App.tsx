@@ -448,9 +448,12 @@ function createInvoicesNavigator(props: BaseProps) {
 
 function createPaymentMethodsNavigator(props: BaseProps) {
   return (
-    <PaymentMethodsStack.Navigator initialRouteName="PaymentMethods" headerMode="none">
-      <PaymentMethodsStack.Screen name="PaymentMethods" component={PaymentMethods} initialParams={props?.route?.params?.params} />
-    </PaymentMethodsStack.Navigator>
+    <StripeProvider
+      publishableKey={'pk_test_51IW3RCDZWHsAGVIVC5fV95OtVn3f1uGN0qVGbIzDMmEAP5R7EDCx9bD4OSRAAbheJ6WnYsQu79fIAW1nEj9Yd3bp00yCzpZfOE'}>
+      <PaymentMethodsStack.Navigator initialRouteName="PaymentMethods" headerMode="none">
+        <PaymentMethodsStack.Screen name="PaymentMethods" component={PaymentMethods} initialParams={props?.route?.params?.params} />
+      </PaymentMethodsStack.Navigator>
+    </StripeProvider>
   );
 }
 

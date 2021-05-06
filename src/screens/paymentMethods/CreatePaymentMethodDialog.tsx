@@ -35,14 +35,15 @@ export default function CreatePaymentMethodDialog(props: Props) {
 
   useEffect(() => {
     async function setUp() {
-      setProvider(await getProvider());
-      setUserID(provider.getUserInfo().id);
+      const csProvider = await getProvider();
+      setProvider(csProvider);
+      setUserID(csProvider.getUserInfo().id);
     }
     setUp();
-  }, [provider]);
+  }, []);
 
   const addPaymentMethod = async (): Promise<void> => {
-    const response: BillingOperationResponse = await provider.setUpPaymentMethod({ userID });
+    const response: BillingOperationResponse = await provider.setUpPaymentMethod({ userID: provider.getUserInfo().id });
     const setUpIntent: any = response?.internalData;
 
     console.log('###########################################\n');
@@ -64,17 +65,17 @@ export default function CreatePaymentMethodDialog(props: Props) {
       } else if (setupIntentResult) {
         console.log(`Success: Setup intent created. Intent status: ${setupIntentResult.status}`);
         // TODO - call the backend to set the new payment method as the default one
-      }
-      console.log(setupIntentResult);
+        console.log(setupIntentResult);
 
-      const attachResponse: BillingOperationResponse = await provider.attachPaymentMethod({
-        setupIntentId: setupIntentResult?.id,
-        paymentMethodId: setupIntentResult?.paymentMethodId,
-        userID
-      });
+        const attachResponse: BillingOperationResponse = await provider.attachPaymentMethod({
+          setupIntentId: setupIntentResult?.id,
+          paymentMethodId: setupIntentResult?.paymentMethodId,
+          userID: provider.getUserInfo().id
+        });
 
-      if(attachResponse?.succeeded) {
-        props.close();
+        if(attachResponse?.succeeded) {
+          props.close();
+        }
       }
     }
   };
