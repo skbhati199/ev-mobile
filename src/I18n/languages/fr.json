@@ -74,8 +74,8 @@
     "users": "Utilisateurs",
     "badges": "Badges",
     "cars": "Voitures",
-    "invoices": "Factures"
-
+    "invoices": "Factures",
+    "paymentMethods": "Méthodes de paiement"
   },
   "authentication": {
     "noTenantFoundTitle" : "Aucune organisation trouvée",
@@ -171,6 +171,11 @@
     "userUnexpectedError": "Impossible de lire l'utilisateur",
     "noUsers": "Aucun utilisateur",
     "users": "Utilisateur(s)"
+  },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "Impossible de lire la méthode de paiement",
+    "noPaymentMethod": "Aucune méthode de paiement",
+    "paymentMethods": "Méthode(s) de paiement"
   },
   "userRoles": {
     "admin": "Admin",

@@ -74,7 +74,8 @@
     "users": "Users",
     "badges": "Badges",
     "cars": "Cars",
-    "invoices": "Invoices"
+    "invoices": "Invoices",
+    "paymentMethods": "Payment Methods"
   },
   "cars": {
     "noCars": "No cars",
@@ -82,9 +83,9 @@
     "cars": "Car(s)"
   },
   "invoices": {
-    "noInvoices": "Aucune facture",
-    "invoiceUnexpectedError": "Une erreur est survenue",
-    "invoices": "Facture(s)"
+    "noInvoices": "No Invoices",
+    "invoiceUnexpectedError": "An error occurred",
+    "invoices": "Invoice(s)"
   },
 	"authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -180,6 +181,11 @@
     "userUnexpectedError": "Non posso leggere gli utenti",
     "noUsers": "No users",
     "users": "Users(s)"
+  },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)"
   },
   "userRoles": {
     "admin": "Admin",

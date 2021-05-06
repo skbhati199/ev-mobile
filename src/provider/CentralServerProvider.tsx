@@ -1,14 +1,13 @@
-import { Buffer } from 'buffer';
-
 import { NavigationContainerRef, StackActions } from '@react-navigation/native';
 import { AxiosInstance } from 'axios';
+import { Buffer } from 'buffer';
 import jwtDecode from 'jwt-decode';
-import { Alert } from 'react-native';
 
 import Configuration from '../config/Configuration';
 import I18nManager from '../I18n/I18nManager';
 import NotificationManager from '../notification/NotificationManager';
-import { ActionResponse, BillingOperationResponse } from '../types/ActionResponse';
+import ActionResponse, { BillingOperationResponse } from '../types/ActionResponse';
+import { BillingPaymentMethod } from '../types/Billing';
 import Car from '../types/Car';
 import ChargingStation from '../types/ChargingStation';
 import { DataResult, TransactionDataResult } from '../types/DataResult';
@@ -725,6 +724,18 @@ export default class CentralServerProvider {
     return result.data;
   }
 
+  public async getPaymentMethods(params = {}, paging: PagingParams = Constants.DEFAULT_PAGING): Promise<DataResult<BillingPaymentMethod>> {
+    this.debugMethod('getPaymentMethods');
+    // Build Paging
+    this.buildPaging(paging, params);
+    // Call
+    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHODS}`.replace(':userID', params.currentUserID);
+    const result = await this.axiosInstance.get(url, {
+      headers: this.buildSecuredHeaders()
+    });
+    return result.data;
+  }
+
   public async requestChargingStationOcppParameters(id: string): Promise<ActionResponse> {
     this.debugMethod('requestChargingStationOCPPConfiguration');
     // Call
@@ -817,9 +828,20 @@ export default class CentralServerProvider {
     return result.data;
   }
 
-  public async setUpPaymentMethod(userID: string): Promise<BillingOperationResponse> {
-    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`.replace(':userID', userID);
-    const result = await this.axiosInstance.post(url, { userID }, { headers: this.buildSecuredHeaders() });
+  public async setUpPaymentMethod(params): Promise<BillingOperationResponse> {
+    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_SETUP}`
+      .replace(':userID', params.userID)
+    console.log(url);
+    const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
+    return result.data as BillingOperationResponse;
+  }
+
+  public async attachPaymentMethod(params): Promise<BillingOperationResponse> {
+    const url = `${this.buildRestServerAPIURL()}/${ServerRoute.REST_BILLING_PAYMENT_METHOD_ATTACH}`
+      .replace(':userID', params.userID)
+      .replace(':paymentMethodID', params.paymentMethodId);
+    console.log(url);
+    const result = await this.axiosInstance.post(url, { params }, { headers: this.buildSecuredHeaders() });
     return result.data as BillingOperationResponse;
   }
 

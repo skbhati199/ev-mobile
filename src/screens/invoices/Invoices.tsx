@@ -44,8 +44,7 @@ export default function Invoices() {
 
       console.log('Now calling confirmSetupIntent!');
       const { error, setupIntent: setupIntentResult } = await confirmSetupIntent(clientSecret, {
-        type: 'Card',
-        billingDetails
+        type: 'Card'
       });
 
       if (error) {
@@ -58,15 +57,8 @@ export default function Invoices() {
   };
 
   return (
-    <View>
-      <CardField
-        onCardChange={(cardDetailsChanged) => setCardDetails(cardDetailsChanged)}
-        postalCodeEnabled={false}
-        style={{ height: 50, marginTop: 100 }}
-      />
-      <TouchableOpacity onPress={async () => addPaymentMethod()}>
-        <Text>Add payment method</Text>
-      </TouchableOpacity>
+    <View style={{ paddingTop: 200, alignSelf: 'center' }}>
+      <Text>To be implemented...</Text>
     </View>
   );
 }

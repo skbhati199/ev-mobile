@@ -74,8 +74,8 @@
     "users": "Users",
     "badges": "Badges",
     "cars": "Cars",
-    "invoices": "Invoices"
-
+    "invoices": "Invoices",
+    "paymentMethods": "Payment Methods"
   },
   "authentication": {
     "noTenantFoundTitle" : "No organization found",
@@ -171,6 +171,11 @@
     "userUnexpectedError": "No se ha podido cargar el usuario",
     "noUsers": "No users",
     "users": "Users(s)",
+  },
+  "paymentMethods": {
+    "paymentMethodUnexpectedError": "An error occurred",
+    "noPaymentMethod": "No payment method",
+    "paymentMethods": "Payment method(s)"
   },
   "userRoles": {
     "admin": "Admin",

@@ -32,7 +32,8 @@ export enum Entity {
   OCPI_ENDPOINT = 'OcpiEndpoint',
   OCPI_ENDPOINTS = 'OcpiEndpoints',
   CONNECTION = 'Connection',
-  CONNECTIONS = 'Connections'
+  CONNECTIONS = 'Connections',
+  PAYMENT_METHODS = 'PaymentMethods'
 }
 
 export enum Role {
