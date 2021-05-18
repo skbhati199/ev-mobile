@@ -21,6 +21,7 @@ import { InactivityStatus } from '../types/Transaction';
 import User, { UserRole, UserStatus } from '../types/User';
 import Constants from './Constants';
 import Message from './Message';
+import Site from "../types/Site";
 
 export default class Utils {
   public static getEndpointCloud(): EndpointCloud[] {
@@ -881,5 +882,12 @@ export default class Utils {
 
   private static getDeviceLanguage(): string {
     return Utils.getLanguageFromLocale(Utils.getDeviceLocale());
+  }
+
+  public static inArrayCaenMougins(sites: Site[]): boolean {
+    if (sites.length === 2) {
+      return true;
+    }
+    return false;
   }
 }
