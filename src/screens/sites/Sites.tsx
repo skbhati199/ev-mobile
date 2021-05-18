@@ -260,6 +260,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
+    const FranceRegion = { longitude: 2.3514616, latitude: 48.8566969, latitudeDelta: 12, longitudeDelta: 12 };
     return (
       <Container style={style.container}>
         <HeaderComponent
