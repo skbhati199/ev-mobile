@@ -263,6 +263,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // const foundCaenMougins = sites.filter((site) => site.name === 'SAP Labs Caen' || 'SAP Labs Mougins');
     // const displayCaenMougins = Utils.inArrayCaenMougins(foundCaenMougins);
     // const FranceRegion = { longitude: 2.3514616, latitude: 48.8566969, latitudeDelta: 12, longitudeDelta: 12 };
+    const ArrayMarkers = sites.map((site: Site) => site.address.coordinates);
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -295,8 +296,14 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
               <View style={style.map}>
                 <MapView
                   style={style.map}
-                  region={displayCaenMougins ? FranceRegion : this.currentRegion}
-                  onRegionChange={this.onMapRegionChange}>
+                  region={this.currentRegion}
+                  onRegionChange={this.onMapRegionChange}
+                  onMapReady={() =>
+                    this.map.fitToCoordinates(ArrayMarkers, {
+                      edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
+                      animated: true
+                    })
+                  }>
                   {this.state.sites.map((site: Site) => {
                     if (Utils.containsAddressGPSCoordinates(site.address)) {
                       return (
