@@ -5,7 +5,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Location } from 'react-native-location';
-import MapView, { Marker, Region } from 'react-native-maps';
+import MapView, { LatLng, Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -51,6 +51,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
   private currentLocation: Location;
   private locationEnabled: boolean;
   private currentRegion: Region;
+  private mapRef: any;
 
   public constructor(props: Props) {
     super(props);
@@ -263,7 +264,7 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     // const foundCaenMougins = sites.filter((site) => site.name === 'SAP Labs Caen' || 'SAP Labs Mougins');
     // const displayCaenMougins = Utils.inArrayCaenMougins(foundCaenMougins);
     // const FranceRegion = { longitude: 2.3514616, latitude: 48.8566969, latitudeDelta: 12, longitudeDelta: 12 };
-    const ArrayMarkers = sites.map((site: Site) => site.address.coordinates);
+    const ArrayMarkers = sites.map((site: Site) => ({ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }));
     return (
       <Container style={style.container}>
         <HeaderComponent
@@ -296,12 +297,15 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
               <View style={style.map}>
                 <MapView
                   style={style.map}
-                  region={this.currentRegion}
+                  ref={(ref) => {
+                    this.mapRef = ref;
+                  }}
+                  // region={this.currentRegion}
                   onRegionChange={this.onMapRegionChange}
                   onMapReady={() =>
-                    this.map.fitToCoordinates(ArrayMarkers, {
+                    this.mapRef.fitToCoordinates(ArrayMarkers, {
                       edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
-                      animated: true
+                      animated: false
                     })
                   }>
                   {this.state.sites.map((site: Site) => {
