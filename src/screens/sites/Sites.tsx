@@ -5,7 +5,7 @@ import React from 'react';
 import { Platform } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { Location } from 'react-native-location';
-import MapView, { LatLng, Marker, Region } from 'react-native-maps';
+import MapView, { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
 import { Modalize } from 'react-native-modalize';
 
@@ -261,9 +261,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
     const { navigation } = this.props;
     const { loading, skip, count, limit, initialFilters, showMap, siteSelected, refreshing, sites } = this.state;
     const mapIsDisplayed = showMap && !Utils.isEmptyArray(this.state.sites);
-    // const foundCaenMougins = sites.filter((site) => site.name === 'SAP Labs Caen' || 'SAP Labs Mougins');
-    // const displayCaenMougins = Utils.inArrayCaenMougins(foundCaenMougins);
-    // const FranceRegion = { longitude: 2.3514616, latitude: 48.8566969, latitudeDelta: 12, longitudeDelta: 12 };
     const ArrayMarkers = sites.map((site: Site) => ({ longitude: site.address.coordinates[0], latitude: site.address.coordinates[1] }));
     return (
       <Container style={style.container}>
@@ -300,7 +297,6 @@ export default class Sites extends BaseAutoRefreshScreen<Props, State> {
                   ref={(ref) => {
                     this.mapRef = ref;
                   }}
-                  // region={this.currentRegion}
                   onRegionChange={this.onMapRegionChange}
                   onMapReady={() =>
                     this.mapRef.fitToCoordinates(ArrayMarkers, {
