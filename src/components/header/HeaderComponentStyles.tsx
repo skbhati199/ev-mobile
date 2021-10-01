@@ -11,6 +11,8 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     header: {
       height: '45@s',
       width: '100%',
+      flexDirection: 'row',
+      alignItems: 'center',
       padding: 0,
       margin: 0,
       borderBottomWidth: 0,
@@ -23,13 +25,15 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     },
     rightHeader: {
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      width: '10%'
     },
     bodyHeader: {
-      flex: 4,
-      paddingLeft: Platform.OS === 'ios' ? 0 : '40@s',
+      flexBasis: 'auto',
       height: '100%',
-      justifyContent: 'center'
+      justifyContent: 'center',
+      alignItems: 'center',
+      flex: 1
     },
     titleHeader: {
       width: '90%',

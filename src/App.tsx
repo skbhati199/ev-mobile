@@ -534,7 +534,6 @@ export default class App extends React.Component<Props, State> {
     if (appVersion?.needsUpdate) {
       this.setState({ showAppUpdateDialog: true });
     }
-
     // Set
     this.setState({
       navigationState,

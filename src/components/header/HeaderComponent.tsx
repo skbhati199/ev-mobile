@@ -102,8 +102,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
       displayTenantLogo
     } = this.props;
     return (
-      <Header style={style.header}>
-        <Left style={style.leftHeader}>
+      <View style={style.header}>
+        <View style={style.leftHeader}>
           {leftAction ? (
             <View style={style.leftHeader}>
               <Icon type={leftActionIconType} name={leftActionIcon} style={style.iconLeftHeader} onPress={leftAction} />
@@ -116,12 +116,12 @@ export default class HeaderComponent extends React.Component<Props, State> {
               <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
             )
           )}
-        </Left>
-        <Body style={style.bodyHeader}>
+        </View>
+        <View style={style.bodyHeader}>
           <Title style={[style.titleHeader, subTitle ? style.titleHeaderWithSubTitle : null]}>{title}</Title>
           {subTitle && <Subtitle style={style.subTitleHeader}>{subTitle}</Subtitle>}
-        </Body>
-        <Right style={style.rightHeader}>
+        </View>
+        <View style={style.rightHeader}>
           {hasFilter && (
             <TouchableOpacity
               onPress={() => {
@@ -156,8 +156,8 @@ export default class HeaderComponent extends React.Component<Props, State> {
               <Image source={tenantLogo ? { uri: tenantLogo } : defaultTenantLogo} style={style.logoHeader as ImageStyle} />
             )
           )}
-        </Right>
-      </Header>
+        </View>
+      </View>
     );
   };
 }

@@ -200,7 +200,7 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   public getTransaction = async (transactionID: number): Promise<Transaction> => {
     try {
       // Get Transaction
-      const transaction = await this.centralServerProvider.getTransaction(transactionID);
+      const transaction = await this.centralServerProvider.getTransaction(transactionID, { WithCar: true });
       return transaction;
     } catch (error) {
       // Check if HTTP?
@@ -692,12 +692,12 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderInstantPower = (style: any) => {
-    const { connector } = this.state;
+    const { connector, chargingStation, transaction } = this.state;
     return connector && connector.currentTransactionID && !isNaN(connector.currentInstantWatts) ? (
       <View style={style.columnContainer}>
         <Icon type="FontAwesome" name="bolt" style={[style.icon, style.info]} />
         <Text style={[style.label, style.labelValue, style.info]}>
-          {connector.currentInstantWatts / 1000 > 0 ? I18nManager.formatNumber(Math.round(connector.currentInstantWatts / 10) / 100) : 0}
+          {connector.currentInstantWatts / 1000 > 0 ? I18nManager.formatNumber(Math.round(connector.currentInstantWatts / 10) / 100) : 0} / {transaction?.carCatalog?.vehicleMake}
         </Text>
         <Text style={[style.subLabel, style.info]}>{I18n.t('details.instant')} (kW)</Text>
       </View>
