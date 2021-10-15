@@ -817,18 +817,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
     const { buttonDisabled } = this.state;
     return (
       <TouchableOpacity disabled={buttonDisabled} onPress={() => this.startTransactionConfirm()}>
-        <View
-          style={
-            buttonDisabled
-              ? [style.buttonTransaction, style.startTransaction, style.buttonTransactionDisabled]
-              : [style.buttonTransaction, style.startTransaction]
-          }>
+        <View style={[style.buttonTransaction, style.startTransaction, buttonDisabled && style.buttonTransactionDisabled]}>
           <Icon
-            style={
-              buttonDisabled
-                ? [style.transactionIcon, style.startTransactionIcon, style.transactionDisabledIcon]
-                : [style.transactionIcon, style.startTransactionIcon]
-            }
+            style={[style.transactionIcon, style.startTransactionIcon, buttonDisabled && style.transactionDisabledIcon]}
             type="MaterialIcons"
             name="play-arrow"
           />
@@ -838,21 +829,13 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
   };
 
   public renderStopTransactionButton = (style: any) => {
-    const { canStopTransaction } = this.state;
+    const { connector } = this.state;
+    const isSessionActive = connector?.currentTransactionID > 0;
     return (
-      <TouchableOpacity onPress={() => this.setState({ showStopTransactionDialog: true })} disabled={!canStopTransaction}>
-        <View
-          style={
-            !canStopTransaction
-              ? [style.buttonTransaction, style.stopTransaction, style.buttonTransactionDisabled]
-              : [style.buttonTransaction, style.stopTransaction]
-          }>
+      <TouchableOpacity onPress={() => this.setState({ showStopTransactionDialog: true })} disabled={!isSessionActive}>
+        <View style={[style.buttonTransaction, style.stopTransaction, !isSessionActive && style.buttonTransactionDisabled]}>
           <Icon
-            style={
-              !canStopTransaction
-                ? [style.transactionIcon, style.stopTransactionIcon, style.transactionDisabledIcon]
-                : [style.transactionIcon, style.stopTransactionIcon]
-            }
+            style={[style.transactionIcon, style.stopTransactionIcon, !isSessionActive && style.transactionDisabledIcon]}
             type="MaterialIcons"
             name="stop"
           />
@@ -909,9 +892,9 @@ export default class ChargingStationConnectorDetails extends BaseAutoRefreshScre
             {/* Show Last Transaction */}
             {this.renderShowLastTransactionButton(style)}
             {/* Start/Stop Transaction */}
-            {canStartTransaction && connector?.currentTransactionID === 0 ? (
+            {canStartTransaction && (connector?.status === ChargePointStatus.PREPARING || connector?.status === ChargePointStatus.AVAILABLE) ? (
               <View style={style.transactionContainer}>{this.renderStartTransactionButton(style)}</View>
-            ) : canStopTransaction && connector?.currentTransactionID > 0 ? (
+            ) : canStopTransaction && connector?.status !== ChargePointStatus.PREPARING && connector?.status !== ChargePointStatus.AVAILABLE ? (
               <View style={style.transactionContainer}>{this.renderStopTransactionButton(style)}</View>
             ) : (
               <View style={style.noButtonStopTransaction} />
