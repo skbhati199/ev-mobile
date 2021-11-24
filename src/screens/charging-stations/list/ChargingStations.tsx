@@ -1,8 +1,7 @@
 import I18n from 'i18n-js';
 import { Container, Icon, Spinner, View } from 'native-base';
-import React from 'react';
+import React, { createRef } from 'react';
 import { BackHandler, Image, ImageStyle, NativeEventSubscription, Platform, ScrollView, Text, TouchableOpacity } from 'react-native';
-import { ClusterMap } from 'react-native-cluster-map';
 import { Location } from 'react-native-location';
 import { Marker, Region } from 'react-native-maps';
 import Modal from 'react-native-modal';
@@ -32,6 +31,11 @@ import computeFabStyles from '../../../components/fab/FabComponentStyles';
 import standardDarkLayout from '../../../../assets/map/standard-dark.png';
 import standardLightLayout from '../../../../assets/map/standard-light.png';
 import satelliteLayout from '../../../../assets/map/satellite.png';
+import { scale } from 'react-native-size-matters';
+import MapView from "react-native-map-clustering";
+import { ClusterMap } from 'react-native-cluster-map';
+import { ClusterService} from 'react-native-cluster-map/lib/cluster-service';
+import SelectableList from '../../base-screen/SelectableList';
 
 
 export interface Props extends BaseProps {}
@@ -63,6 +67,7 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
   private parent: any;
   private darkMapTheme = require('../../../utils/map/google-maps-night-style.json');
   private backHandler: NativeEventSubscription;
+  private superClusterRef = createRef<any>();
 
   public constructor(props: Props) {
     super(props);
@@ -420,34 +425,65 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
             {mapIsDisplayed ? (
               <View style={style.map}>
                 {this.currentRegion && (
-                  <ClusterMap
-                    customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
-                    style={style.map}
-                    provider={null}
-                    showsCompass={false}
-                    showsUserLocation={true}
-                    isClusterExpandClick={true}
-                    renderClusterMarker={({ pointCount, clusterId }) => (
-                      <View style={style.cluster}>
-                        <Text style={style.text}>{pointCount}</Text>
-                      </View>
-                    )}
-                    zoomControlEnabled={false}
-                    toolbarEnabled={false}
-                    mapType={satelliteMap ? 'satellite' : 'standard'}
-                    region={this.currentRegion}
-                    onRegionChange={this.onMapRegionChange}>
+/*                  <MapView  style={style.map}       initialRegion={this.currentRegion}
+                            renderCluster={(c) => <View><Text>wergrwg</Text></View>} >
                     {chargingStationsWithGPSCoordinates.map((chargingStation) => (
                       <Marker
-                        style={{height: 20, width: 20}}
-                        image={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)}
                         key={chargingStation.id}
                         coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
                         title={chargingStation.id}
                         onPress={() => this.showMapChargingStationDetail(chargingStation)}
-                      />
-                    ))}
-                  </ClusterMap>
+                      >
+                          <Icon type={'FontAwesome5'} name={'charging-station'} />
+                          </Marker>
+                          ))}
+                  </MapView>*/
+//                   <MapView renderCluster={(cluster) => this.renderCustomCluster(cluster?.id)}
+//                            superClusterRef={this.superClusterRef}
+//                            initialRegion={this.currentRegion}
+//                            style={{ flex: 1 }}>
+//                     {chargingStationsWithGPSCoordinates.map((chargingStation) => (
+//                       <Marker
+//                         key={chargingStation.id}
+//                         coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+//                         title={chargingStation.id}
+//                         onPress={() => this.showMapChargingStationDetail(chargingStation)}
+//                       >
+// {/*                        {
+//                           <Image style={{height: scale(30), width: scale(30)}} source={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)} />
+//                         }*/}
+//                         <Icon type={'FontAwesome5'} name={'charging-station'} />
+//                       </Marker>
+//                     ))}
+//                   </MapView>
+                                   <ClusterMap
+                                      customMapStyle={isDarkModeEnabled ? this.darkMapTheme : null}
+                                      style={style.map}
+                                      provider={null}
+                                      maxZoomLevel={18}
+                                      showsCompass={false}
+                                      showsUserLocation={true}
+                                      isClusterExpandClick={true}
+                                      renderClusterMarker={({clusterId, pointCount}) => this.renderCustomCluster(clusterId)}
+                                      zoomControlEnabled={false}
+                                      toolbarEnabled={false}
+                                      mapType={satelliteMap ? 'satellite' : 'standard'}
+                                      region={this.currentRegion}
+                                      onRegionChange={this.onMapRegionChange}>
+                                      {chargingStationsWithGPSCoordinates.map((chargingStation) => (
+                                        <Marker
+                                          key={chargingStation.id}
+                                          coordinate={{ longitude: chargingStation.coordinates[0], latitude: chargingStation.coordinates[1] }}
+                                          title={chargingStation.id}
+                                          onPress={() => this.showMapChargingStationDetail(chargingStation)}
+                                        >
+{/*                {
+                                          <Image style={{height: scale(30), width: scale(30)}} source={Utils.buildChargingStationStatusMarker(chargingStation.connectors, chargingStation.inactive)} />
+                  }*/}
+                                          <Icon type={'FontAwesome5'} name={'charging-station'} />
+                                        </Marker>
+                                      ))}
+                                    </ClusterMap>
                 )}
                 {chargingStationSelected && this.buildModal(isAdmin, navigation, chargingStationSelected, modalStyle)}
               </View>
@@ -476,6 +512,16 @@ export default class ChargingStations extends BaseAutoRefreshScreen<Props, State
           </View>
         )}
       </Container>
+    );
+  }
+
+  private renderCustomCluster(clusterID: number) {
+    const children = this.superClusterRef?.current?.getLeaves(clusterID);
+    const style = computeStyleSheet();
+    return (
+      <View style={style.cluster}>
+        <Text style={style.text}>{2}</Text>
+      </View>
     );
   }
 }

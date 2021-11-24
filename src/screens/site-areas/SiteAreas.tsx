@@ -101,14 +101,9 @@ export default class SiteAreas extends BaseAutoRefreshScreen<Props, State> {
   }
 
   public async getCurrentLocation(): Promise<Location> {
-    const { filters } = this.state;
     // Get the current location
     let currentLocation = (await LocationManager.getInstance()).getLocation();
-    this.locationEnabled = currentLocation ? true : false;
-    // Bypass location
-    if (!filters.location) {
-      currentLocation = null;
-    }
+    this.locationEnabled = !!currentLocation;
     return currentLocation;
   }
 
