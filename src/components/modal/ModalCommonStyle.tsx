@@ -11,12 +11,14 @@ export default function computeStyleSheet(): StyleSheet.NamedStyles<any> {
     primaryButton: {
       backgroundColor: commonColor.primary,
       borderColor: commonColor.primary,
-      color: commonColor.light
+      color: commonColor.light,
+      borderWidth: 0.8
     },
     outlinedButton: {
       color: commonColor.textColor,
       backgroundColor: commonColor.listBackgroundHeader,
-      borderColor: commonColor.textColor
+      borderColor: commonColor.textColor,
+      borderWidth: 0.8
     }
   });
   const portraitStyles = {};

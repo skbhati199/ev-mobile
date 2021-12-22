@@ -5,6 +5,7 @@ import { Icon } from 'native-base';
 import I18n from 'i18n-js';
 import computeStyleSheet from './DialogModalStyle';
 import { Animation } from 'react-native-animatable';
+import { Button } from 'react-native-elements';
 
 export interface DialogModalButton {
   text: string;
@@ -91,17 +92,13 @@ export default class DialogModal extends React.Component<Props, State> {
           {renderControls?.()}
           <View style={[style.buttonsContainer, buttonsContainerStyle]}>
             {buttons?.filter((b) => b).map((button: DialogModalButton, index) => (
-                <TouchableOpacity onPress={button.action} style={[button.buttonStyle, buttonCommonStyle]} key={index}>
+                <Button titleStyle={{ ...style.buttonText }} onPress={button.action} title={button.text?.toUpperCase()} buttonStyle={button.buttonStyle} containerStyle={[buttonCommonStyle]} key={index}>
                   {button.renderIcon?.()}
-                  <Text style={{ ...style.buttonText, ...button.buttonTextStyle }}>{button.text?.toUpperCase()}</Text>
-                </TouchableOpacity>
+                </Button>
               ))}
             {withCancel && (
-              <TouchableOpacity style={[buttonCommonStyle, style.cancelButton]} onPress={() => close?.()}>
-                <Text style={[style.buttonText, style.cancelButtonText]}>
-                  {(cancelButtonText ?? I18n.t('general.cancel')).toUpperCase()}
-                </Text>
-              </TouchableOpacity>
+              <Button titleStyle={[style.buttonText, style.cancelButtonText]}  title={I18n.t('general.cancel').toUpperCase()} buttonStyle={style.cancelButton} containerStyle={[buttonCommonStyle]} onPress={() => close?.()}>
+              </Button>
             )}
           </View>
         </View>
@@ -123,9 +120,9 @@ export default class DialogModal extends React.Component<Props, State> {
     const { buttons, withCancel } = this.props;
     const horizontalLayoutCount = withCancel ? 1 : 2;
     if (buttons?.filter((b) => b).length === horizontalLayoutCount) {
-      return { ...style.button, ...style.horizontalButton };
+      return style.horizontalButton;
     } else if (buttons && buttons?.filter((b) => b).length !== horizontalLayoutCount) {
-      return { ...style.button, ...style.verticalButton };
+      return style.verticalButton;
     }
   }
 }
